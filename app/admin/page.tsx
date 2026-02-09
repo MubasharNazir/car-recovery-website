@@ -18,6 +18,11 @@ export default function AdminDashboard() {
   const router = useRouter();
 
   useEffect(() => {
+    if (!auth) {
+      setLoading(false);
+      return;
+    }
+    
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
@@ -50,6 +55,11 @@ export default function AdminDashboard() {
   }, [user]);
 
   const handleLogout = async () => {
+    if (!auth) {
+      router.push("/admin/login");
+      return;
+    }
+    
     try {
       await signOut(auth);
       router.push("/admin/login");

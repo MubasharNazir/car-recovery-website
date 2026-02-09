@@ -18,6 +18,12 @@ export default function AdminLogin() {
     setLoading(true);
     setError("");
 
+    if (!auth) {
+      setError("Admin functionality is not available. This is a static website.");
+      setLoading(false);
+      return;
+    }
+
     try {
       await signInWithEmailAndPassword(auth, email, password);
       router.push("/admin");

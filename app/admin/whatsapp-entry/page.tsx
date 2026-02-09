@@ -24,6 +24,11 @@ export default function WhatsAppEntry() {
   const router = useRouter();
 
   useEffect(() => {
+    if (!auth) {
+      router.push("/admin/login");
+      return;
+    }
+    
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         setUser(currentUser);

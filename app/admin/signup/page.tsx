@@ -34,6 +34,12 @@ export default function AdminSignup() {
       return;
     }
 
+    if (!auth) {
+      setError("Admin functionality is not available. This is a static website.");
+      setLoading(false);
+      return;
+    }
+
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       setSuccess(true);
