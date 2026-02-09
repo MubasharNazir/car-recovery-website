@@ -126,7 +126,8 @@ export async function updateProviderLoad(providerId: string, increment: number) 
   const provider = await getProvider(providerId);
   if (!provider) return;
   
-  const newLoad = Math.max(0, ((provider.currentLoad as number) || 0) + increment);
+  const providerData = provider as ProviderData & { id: string };
+  const newLoad = Math.max(0, (providerData.currentLoad || 0) + increment);
   return await updateDoc(providerRef, {
     currentLoad: newLoad
   });
