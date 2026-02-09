@@ -110,7 +110,7 @@ export default function AdminLogin() {
               href="/admin/signup"
               className="text-sm text-accent-600 hover:text-accent-700"
             >
-              Don't have an account? Create one
+              Don&apos;t have an account? Create one
             </Link>
           </div>
         </form>

@@ -71,7 +71,7 @@ export default function Contact() {
               {submitted ? (
                 <div className="bg-green-50 border border-green-200 text-green-800 p-4 rounded-lg">
                   <p className="font-semibold">Thank you for your request!</p>
-                  <p className="mt-2">We've received your request. Our team will contact you shortly via WhatsApp.</p>
+                  <p className="mt-2">We&apos;ve received your request. Our team will contact you shortly via WhatsApp.</p>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">

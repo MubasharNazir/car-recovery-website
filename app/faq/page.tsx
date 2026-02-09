@@ -116,7 +116,7 @@ export default function FAQ() {
               Still Have Questions?
             </h2>
             <p className="text-gray-700 mb-8 text-lg">
-              Can't find the answer you're looking for? Our team is here to help. Contact us anytime.
+              Can&apos;t find the answer you&apos;re looking for? Our team is here to help. Contact us anytime.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a

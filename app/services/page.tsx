@@ -245,7 +245,7 @@ export default function Services() {
                   When you request our service:
                 </p>
                 <ol className="space-y-3 list-decimal list-inside">
-                  <li className="text-gray-700">You'll receive confirmation and estimated arrival time</li>
+                  <li className="text-gray-700">You&apos;ll receive confirmation and estimated arrival time</li>
                   <li className="text-gray-700">Our provider will contact you when en route</li>
                   <li className="text-gray-700">Professional assessment of your situation</li>
                   <li className="text-gray-700">Clear explanation of service and pricing</li>

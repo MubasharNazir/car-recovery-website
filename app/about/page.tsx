@@ -46,7 +46,7 @@ export default function About() {
               <p className="text-gray-700 mb-6 text-lg leading-relaxed">
                 UAE Car Recovery Services is a leading car recovery and towing
                 service provider in Abu Dhabi. We understand that vehicle
-                breakdowns and emergencies can happen at any time, and we're
+                breakdowns and emergencies can happen at any time, and we&apos;re
                 committed to providing fast, efficient, and professional solutions.
               </p>
 
@@ -79,7 +79,7 @@ export default function About() {
                     24/7 Availability
                   </h3>
                   <p className="text-gray-700">
-                    Emergencies don't wait for business hours. Our service is
+                    Emergencies don&apos;t wait for business hours. Our service is
                     available round the clock, 365 days a year.
                   </p>
                 </div>
@@ -99,7 +99,7 @@ export default function About() {
                   </h3>
                   <p className="text-gray-700">
                     No hidden fees or surprises. We believe in transparent
-                    pricing so you know exactly what you're paying for.
+                    pricing so you know exactly what you&apos;re paying for.
                   </p>
                 </div>
               </div>
