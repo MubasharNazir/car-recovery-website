@@ -66,7 +66,7 @@ export async function notifyProvider(data: NotificationData): Promise<{ success:
       };
     }
 
-    return { success: false, method: 'none', error: result.error };
+    return { success: false, method: 'none' };
   } catch (error) {
     console.error('Error sending WhatsApp notification:', error);
     return { success: false, method: 'none' };
