@@ -19,9 +19,6 @@ const nextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
   swcMinify: true,
-  experimental: {
-    optimizeCss: true,
-  },
   webpack: (config, { isServer }) => {
     // Exclude functions folder from webpack compilation
     config.watchOptions = {
