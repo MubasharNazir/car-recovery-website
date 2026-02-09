@@ -1,0 +1,19 @@
+// Copy and paste these rules into Firebase Console → Firestore → Rules
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow anyone to create leads (for public contact form)
+    // Only authenticated admins can read/update/delete
+    match /leads/{leadId} {
+      allow create: if true;  // Public can create leads
+      allow read, update, delete: if request.auth != null;  // Only logged-in admins
+    }
+    
+    // Providers - anyone can read, only authenticated can write
+    match /providers/{providerId} {
+      allow read: if true;  // Public can read provider info
+      allow write: if request.auth != null;  // Only admins can modify
+    }
+  }
+}
