@@ -1,8 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { createLead } from "@/lib/firestore";
-import { assignLeadToProvider } from "@/lib/leadAssignment";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -15,51 +13,26 @@ export default function Contact() {
 
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
     
-    try {
-      // Create lead in Firebase
-      const leadRef = await createLead({
-        customerName: formData.name,
-        customerPhone: formData.phone,
-        customerEmail: formData.email,
-        serviceType: formData.service || "other",
-        location: "Abu Dhabi", // Default location, can be enhanced later
-        source: "website",
-        notes: formData.message
-      });
-
-      // Auto-assign provider
-      await assignLeadToProvider(leadRef.id, formData.service || "other");
-      
-      setSubmitted(true);
-      setFormData({ name: "", email: "", phone: "", service: "", message: "" });
-      
-      setTimeout(() => {
-        setSubmitted(false);
-      }, 5000);
-    } catch (err: any) {
-      console.error("Error submitting form:", err);
-      let errorMessage = "Failed to submit form. Please try again or call us directly.";
-      
-      // More specific error messages
-      if (err?.code === "permission-denied" || err?.message?.includes("permission")) {
-        errorMessage = "Permission denied. Please check Firestore security rules or contact support.";
-      } else if (err?.code === "unavailable" || err?.message?.includes("network")) {
-        errorMessage = "Network error. Please check your connection and try again.";
-      } else if (err?.message) {
-        errorMessage = `Error: ${err.message}`;
-      }
-      
-      setError(errorMessage);
-    } finally {
-      setLoading(false);
-    }
+    // Create WhatsApp message
+    const serviceText = formData.service ? `Service: ${formData.service}\n` : "";
+    const message = `Hi, I need car recovery service.\n\nName: ${formData.name}\nPhone: ${formData.phone}\nEmail: ${formData.email}\n${serviceText}Message: ${formData.message}`;
+    
+    // Open WhatsApp with pre-filled message
+    const whatsappUrl = `https://wa.me/971557540296?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+    
+    setSubmitted(true);
+    setFormData({ name: "", email: "", phone: "", service: "", message: "" });
+    setLoading(false);
+    
+    setTimeout(() => {
+      setSubmitted(false);
+    }, 5000);
   };
 
   const handleChange = (
@@ -98,11 +71,7 @@ export default function Contact() {
               {submitted ? (
                 <div className="bg-green-50 border border-green-200 text-green-800 p-4 rounded-lg">
                   <p className="font-semibold">Thank you for your request!</p>
-                  <p className="mt-2">We've received your request and assigned a service provider. They will contact you shortly.</p>
-                </div>
-              ) : error ? (
-                <div className="bg-red-50 border border-red-200 text-red-800 p-4 rounded-lg">
-                  {error}
+                  <p className="mt-2">We've received your request. Our team will contact you shortly via WhatsApp.</p>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -211,7 +180,7 @@ export default function Contact() {
                     disabled={loading}
                     className="w-full bg-accent-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-accent-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {loading ? "Submitting..." : "Send Message"}
+                    {loading ? "Opening WhatsApp..." : "Send Message via WhatsApp"}
                   </button>
                 </form>
               )}

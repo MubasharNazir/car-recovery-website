@@ -1,19 +1,6 @@
-import { 
-  collection, 
-  addDoc, 
-  getDocs, 
-  doc, 
-  updateDoc, 
-  query, 
-  where, 
-  orderBy,
-  onSnapshot,
-  Timestamp,
-  getDoc
-} from 'firebase/firestore';
-import { db } from './firebase';
+// Firebase functionality removed - static website only
+// This file is kept for compatibility but functions are stubbed
 
-// Lead operations
 export interface LeadData {
   customerName: string;
   customerPhone: string;
@@ -24,58 +11,6 @@ export interface LeadData {
   notes?: string;
 }
 
-export async function createLead(leadData: LeadData) {
-  return await addDoc(collection(db, 'leads'), {
-    ...leadData,
-    status: 'pending',
-    createdAt: Timestamp.now(),
-    assignedProviderId: null,
-    assignedProviderName: null,
-    assignedAt: null,
-    completedAt: null
-  });
-}
-
-export async function getAllLeads() {
-  const leadsRef = collection(db, 'leads');
-  const q = query(leadsRef, orderBy('createdAt', 'desc'));
-  const snapshot = await getDocs(q);
-  return snapshot.docs.map(doc => ({
-    id: doc.id,
-    ...doc.data()
-  }));
-}
-
-export async function getLead(leadId: string) {
-  const leadRef = doc(db, 'leads', leadId);
-  const leadSnap = await getDoc(leadRef);
-  if (!leadSnap.exists()) return null;
-  return { id: leadSnap.id, ...leadSnap.data() };
-}
-
-export async function updateLeadStatus(
-  leadId: string, 
-  status: string, 
-  providerId?: string,
-  providerName?: string
-) {
-  const leadRef = doc(db, 'leads', leadId);
-  const updateData: any = { status };
-  
-  if (providerId && providerName) {
-    updateData.assignedProviderId = providerId;
-    updateData.assignedProviderName = providerName;
-    updateData.assignedAt = Timestamp.now();
-  }
-  
-  if (status === 'completed') {
-    updateData.completedAt = Timestamp.now();
-  }
-  
-  return await updateDoc(leadRef, updateData);
-}
-
-// Provider operations
 export interface ProviderData {
   name: string;
   phone: string;
@@ -89,82 +24,52 @@ export interface ProviderData {
   completedLeads?: number;
 }
 
+// Stub functions - no Firebase functionality
+export async function createLead(leadData: LeadData) {
+  return { id: 'stub' };
+}
+
+export async function getAllLeads() {
+  return [];
+}
+
+export async function getLead(leadId: string) {
+  return null;
+}
+
+export async function updateLeadStatus(
+  leadId: string, 
+  status: string, 
+  providerId?: string,
+  providerName?: string
+) {
+  return null;
+}
+
 export async function getAllProviders() {
-  const providersRef = collection(db, 'providers');
-  const snapshot = await getDocs(providersRef);
-  return snapshot.docs.map(doc => ({
-    id: doc.id,
-    ...doc.data()
-  }));
+  return [];
 }
 
 export async function getProvider(providerId: string) {
-  const providerRef = doc(db, 'providers', providerId);
-  const providerSnap = await getDoc(providerRef);
-  if (!providerSnap.exists()) return null;
-  return { id: providerSnap.id, ...providerSnap.data() };
+  return null;
 }
 
 export async function getAvailableProviders(serviceType: string) {
-  const providersRef = collection(db, 'providers');
-  const q = query(
-    providersRef,
-    where('isActive', '==', true),
-    where('serviceTypes', 'array-contains', serviceType)
-  );
-  const snapshot = await getDocs(q);
-  return snapshot.docs
-    .map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    }))
-    .filter((p: any) => (p.currentLoad || 0) < (p.maxCapacity || 5));
+  return [];
 }
 
 export async function updateProviderLoad(providerId: string, increment: number) {
-  const providerRef = doc(db, 'providers', providerId);
-  const provider = await getProvider(providerId);
-  if (!provider) return;
-  
-  const providerData = provider as ProviderData & { id: string };
-  const newLoad = Math.max(0, (providerData.currentLoad || 0) + increment);
-  return await updateDoc(providerRef, {
-    currentLoad: newLoad
-  });
+  return null;
 }
 
 export async function createProvider(providerData: ProviderData) {
-  return await addDoc(collection(db, 'providers'), {
-    ...providerData,
-    totalLeads: 0,
-    completedLeads: 0,
-    rating: 0,
-    createdAt: Timestamp.now()
-  });
+  return { id: 'stub' };
 }
 
-// Real-time listeners
 export function subscribeToLeads(callback: (leads: any[]) => void) {
-  const leadsRef = collection(db, 'leads');
-  const q = query(leadsRef, orderBy('createdAt', 'desc'));
-  
-  return onSnapshot(q, (snapshot) => {
-    const leads = snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    }));
-    callback(leads);
-  });
+  return () => {};
 }
 
 export function subscribeToProviders(callback: (providers: any[]) => void) {
-  const providersRef = collection(db, 'providers');
-  
-  return onSnapshot(providersRef, (snapshot) => {
-    const providers = snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    }));
-    callback(providers);
-  });
+  return () => {};
 }
